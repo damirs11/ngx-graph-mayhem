@@ -109,11 +109,7 @@ export class NgxGraphOrgTreeComponent implements OnInit {
     this._switch = !this._switch;
   }
 
-  getLinkMiddleX(link: any, tableX: any) {
-    return (link.points[0]['x'] + link.points[1]['x'] - tableX) / 2
-  }
-
-  getLinkMiddleY(link: any, tableY: any) {
-    return (link.points[0]['y'] + link.points[1]['y'] - tableY) / 2
+  getMiddle(link: any, axis: 'x' | 'y', offset: any) {
+    return (link.points[0]['x'] + link.points[1]['x'] - offset) / 2
   }
 }
