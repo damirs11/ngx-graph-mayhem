@@ -1,0 +1,41 @@
+:host ::ng-deep {
+  display: block;
+  height: inherit;
+  width: inherit;
+
+  label {
+    display: block;
+    text-align: center;
+    font-size: 20px;
+  }
+}
+
+table {
+  border: 3px solid black;
+
+  td {
+    border: 1px solid black;
+    padding: 10px;
+    height: 50%;
+
+    &:hover {
+      color: red;
+    }
+  }
+}
+
+.content {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    color: red;
+  }
+}
+
+g.node rect,text {
+  cursor: pointer;
+}

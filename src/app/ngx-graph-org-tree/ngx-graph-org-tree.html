@@ -1,0 +1,145 @@
+<table #table>
+  <tbody>
+  <tr>
+    <td>
+      <div class="content">
+        <span>key</span>
+        <span>value</span>
+      </div>
+    </td>
+    <td>
+      <div class="content">
+        <span>key</span>
+        <span>value</span>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div class="content">
+        <span>key</span>
+        <span>value</span>
+      </div>
+    </td>
+    <td>
+      <div class="content">
+        <span>key</span>
+        <span>value</span>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<button (click)="switch()">switch</button>
+
+<ngx-graph
+  *ngIf="_switch"
+  [showMiniMap]="true"
+  [draggingEnabled]="true"
+  [enableZoom]="true"
+  [autoZoom]="false"
+
+  [links]="links"
+  [nodes]="nodes"
+  [layout]="layout"
+>
+
+  <ng-template #defsTemplate>
+    <svg:marker id="arrow-R" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+      <svg:path d="M0,-5L10,0L0,5" class="arrow-head"/>
+    </svg:marker>
+    <svg:marker id="arrow-L" viewBox="-10 -5 10 10" refX="-8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+      <svg:path d="M0,-5L-10,0L0,5" class="arrow-head"/>
+    </svg:marker>
+  </ng-template>
+
+  <ng-template #nodeTemplate let-node>
+    <svg:g class="node">
+      <svg:foreignObject width="185" height="125">
+        <table style="height: 100%; width: 100%;">
+          <tbody>
+          <tr>
+            <td>
+              <div class="content">
+                <span>{{node.id}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="content">
+                <div>{{node.position.x | number}}</div>
+                <div>{{node.position.y | number}}</div>
+                <!--                <span>Рр</span>-->
+                <!--                <span>{{node.data.rr}}</span>-->
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="content">
+                <span>Пр</span>
+                <span>{{node.data.sd}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="content">
+                <span>Delta</span>
+                <span>{{node.data.delta}}</span>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </svg:foreignObject>
+    </svg:g>
+  </ng-template>
+
+  <ng-template #linkTemplate let-link>
+    <svg:g class="edge">
+      <svg:path class="line" stroke-width="2" marker-end="url(#arrow-R)" marker-start="url(#arrow-L)"></svg:path>
+      <svg:text class="edge-label" text-anchor="middle" [matTooltip]="link | json" [matTooltipHideDelay]="1000">
+        <textPath
+          class="text-path"
+          [attr.href]="'#' + link.id"
+          [style.dominant-baseline]="link.dominantBaseline"
+          startOffset="50%"
+        >
+          {{ link.label }}
+        </textPath>
+      </svg:text>
+      <svg:foreignObject width="185" height="125"
+                         [attr.x]="getLinkMiddleX(link, 185)"
+                         [attr.y]="getLinkMiddleY(link, 125)"
+      >
+        <table style="height: 100%; width: 100%;">
+          <tbody>
+          <tr>
+            <td>
+              <div class="content">
+              </div>
+            </td>
+            <td>
+              <div class="content">
+                <!--                <span>Рр</span>-->
+                <!--                <span>{{node.data.rr}}</span>-->
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="content">
+                <span>Пр</span>
+              </div>
+            </td>
+            <td>
+              <div class="content">
+                <span>Delta</span>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </svg:foreignObject>
+    </svg:g>
+  </ng-template>
+
+</ngx-graph>

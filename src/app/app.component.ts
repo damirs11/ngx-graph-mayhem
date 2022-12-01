@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SAMPLE } from 'src/models/sample';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'd3js';
+
+  S = SAMPLE;
 }
