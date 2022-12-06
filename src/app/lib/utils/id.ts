@@ -1,4 +1,5 @@
-const idCache: Record<string, boolean> = {};
+const cache: any = {};
+
 /**
  * Generates a short id.
  *
@@ -9,8 +10,8 @@ export function id(): string {
   newId = `a${newId}`;
 
   // ensure not already used
-  if (!idCache[newId]) {
-    idCache[newId] = true;
+  if (!cache[newId]) {
+    cache[newId] = true;
     return newId;
   }
 

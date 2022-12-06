@@ -4,15 +4,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppComponent} from './app.component';
 import {NgxGraphOrgTreeComponent} from "./ngx-graph-org-tree/ngx-graph-org-tree";
-import {NgxGraphModule} from "@local/ngx-graph";
-import {CustomGraphDirective} from "./ngx-graph-org-tree/custom-graph.directive";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {NgxGraphModule} from "./lib/ngx-graph.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     NgxGraphOrgTreeComponent,
-    CustomGraphDirective,
   ],
   imports: [
     BrowserAnimationsModule,

@@ -1,6 +1,8 @@
-import {DagreClusterLayout, DagreLayout, Graph} from "@local/ngx-graph";
+import {Graph} from "../lib/models";
+import {DagreNodesOnlyLayout} from "../lib/graph/layouts/dagreNodesOnly";
+import {DagreLayout} from "../lib/graph/layouts/dagre";
 
-export class DagreNodesOnlyLayout extends DagreLayout {
+export class CustomLayout extends DagreLayout {
   override run(graph: Graph): Graph {
     this.createDagreGraph(graph);
     // dagre.layout(this.dagreGraph);

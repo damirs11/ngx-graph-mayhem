@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Edge, Node} from "@local/ngx-graph";
-import {DagreNodesOnlyLayout} from "./custom-example";
+import {CustomLayout} from "./custom-example";
+import {Edge, Node} from "../lib/models";
 
 export interface Station {
   id: string,
@@ -24,7 +24,7 @@ export class NgxGraphOrgTreeComponent implements OnInit {
 
   nodes: Node[] = [];
   links: Edge[] = [];
-  layout = new DagreNodesOnlyLayout();
+  layout = new CustomLayout();
   // settings: ColaForceDirectedSettings = {
   //   force: undefined
   // }
@@ -110,6 +110,6 @@ export class NgxGraphOrgTreeComponent implements OnInit {
   }
 
   getMiddle(link: any, axis: 'x' | 'y', offset: any) {
-    return (link.points[0]['x'] + link.points[1]['x'] - offset) / 2
+    return (link.points[0][axis] + link.points[1][axis] - offset) / 2
   }
 }
