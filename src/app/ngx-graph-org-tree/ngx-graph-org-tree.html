@@ -37,11 +37,12 @@
   [showMiniMap]="true"
   [draggingEnabled]="true"
   [enableZoom]="true"
-  [autoZoom]="false"
+
 
   [links]="links"
   [nodes]="nodes"
   [layout]="layout"
+  [layoutSettings]="settings"
 >
 
   <ng-template #defsTemplate>
@@ -66,8 +67,8 @@
             </td>
             <td>
               <div class="content">
-                <div>{{node.position.x | number}}</div>
-                <div>{{node.position.y | number}}</div>
+                <div>{{node.position.x | number : "1.0-0"}}</div>
+                <div>{{node.position.y | number : "1.0-0"}}</div>
                 <!--                <span>Рр</span>-->
                 <!--                <span>{{node.data.rr}}</span>-->
               </div>
@@ -95,8 +96,8 @@
 
   <ng-template #linkTemplate let-link>
     <svg:g class="edge">
-      <svg:path class="line" stroke-width="2" marker-end="url(#arrow-R)" marker-start="url(#arrow-L)"></svg:path>
-      <svg:text class="edge-label" text-anchor="middle" [matTooltip]="link | json" [matTooltipHideDelay]="1000">
+      <svg:path class="line" stroke-width="2" marker-end="url(#arrow-R)" marker-start="url(#arrow-L)" [matTooltip]="link | json" [matTooltipHideDelay]="1000"></svg:path>
+      <svg:text class="edge-label" text-anchor="middle">
         <textPath
           class="text-path"
           [attr.href]="'#' + link.id"
@@ -106,8 +107,8 @@
           {{ link.label }}
         </textPath>
       </svg:text>
-      <svg:foreignObject width="185" height="125"
-                         [attr.x]="getMiddle(link, 'x', 185)"
+      <svg:foreignObject width="200" height="125"
+                         [attr.x]="getMiddle(link, 'x', 200)"
                          [attr.y]="getMiddle(link, 'y', 125)"
       >
         <table style="height: 100%; width: 100%;">
@@ -127,12 +128,12 @@
           <tr>
             <td>
               <div class="content">
-                <span>Пр</span>
+<!--                <span>Пр</span>-->
               </div>
             </td>
             <td>
               <div class="content">
-                <span>Delta</span>
+<!--                <span>Delta</span>-->
               </div>
             </td>
           </tr>

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CustomLayout} from "./custom-example";
+import {DagreNodesOnlySettings} from "../lib/graph/layouts/dagreNodesOnly";
 import {Edge, Node} from "../lib/models";
 
 export interface Station {
@@ -25,9 +26,8 @@ export class NgxGraphOrgTreeComponent implements OnInit {
   nodes: Node[] = [];
   links: Edge[] = [];
   layout = new CustomLayout();
-  // settings: ColaForceDirectedSettings = {
-  //   force: undefined
-  // }
+  settings: DagreNodesOnlySettings = {
+  }
 
   constructor() {
     this.stations = [
@@ -38,8 +38,8 @@ export class NgxGraphOrgTreeComponent implements OnInit {
         pr: 2,
         sd: 3,
         delta: 0,
-        x: 1,
-        y: 1,
+        x: 0,
+        y: 0,
       },
       {
         id: 'ОКТ',
@@ -60,6 +60,66 @@ export class NgxGraphOrgTreeComponent implements OnInit {
         delta: 0,
         x: -10,
         y: 10
+      },
+      {
+        id: 'ЮВС1',
+        connectedWith: ['МСК'],
+        rr: 1,
+        pr: 2,
+        sd: 3,
+        delta: 0,
+        x: 10,
+        y: -10
+      },
+      {
+        id: 'ЮВС2',
+        connectedWith: ['МСК'],
+        rr: 1,
+        pr: 2,
+        sd: 3,
+        delta: 0,
+        x: -10,
+        y: -10
+      },
+      {
+        id: 'ЮВС3',
+        connectedWith: ['МСК'],
+        rr: 1,
+        pr: 2,
+        sd: 3,
+        delta: 0,
+        x: 10,
+        y: 0
+      },
+      {
+        id: 'ЮВС4',
+        connectedWith: ['МСК'],
+        rr: 1,
+        pr: 2,
+        sd: 3,
+        delta: 0,
+        x: -10,
+        y: 0
+      },
+      {
+        id: 'ЮВС5',
+        connectedWith: ['МСК'],
+        rr: 1,
+        pr: 2,
+        sd: 3,
+        delta: 0,
+        x: 0,
+        y: 10
+      },
+      {
+        id: 'ЮВС6',
+        connectedWith: ['МСК'],
+        rr: 1,
+        pr: 2,
+        sd: 3,
+        delta: 0,
+        x: 0,
+        y: -10
       },
     ];
 
@@ -92,9 +152,6 @@ export class NgxGraphOrgTreeComponent implements OnInit {
           source: connectionId,
           target: station.id,
           label: `${connectionId} - ${station.id}`,
-          data: {
-            childNode: station.childNode
-          }
         };
         this.links.push(edge);
       })
@@ -110,6 +167,20 @@ export class NgxGraphOrgTreeComponent implements OnInit {
   }
 
   getMiddle(link: any, axis: 'x' | 'y', offset: any) {
-    return (link.points[0][axis] + link.points[1][axis] - offset) / 2
+    // if(!link || !link.midPoint || !link.midPoint[axis]) {
+    //   return 0;
+    // }
+    // return link.midPoint[axis] - offset / 2;
+
+    const points = link.points;
+    if (!points) {
+      return 0;
+    }
+    let result = 0;
+    const offsetMiddle = offset / 2;
+    for (let point of points) {
+      result = (result + point[axis] - offsetMiddle)
+    }
+    return result / points.length;
   }
 }
