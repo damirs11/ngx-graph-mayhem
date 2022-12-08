@@ -1,18 +1,18 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CustomLayout} from "./custom-example";
 import {DagreNodesOnlySettings} from "../lib/graph/layouts/dagreNodesOnly";
 import {Edge, Node} from "../lib/models";
+import {GraphComponent} from "../lib/graph/graph.component";
 
 export interface Station {
   id: string,
-  pr: number,
-  sd: number,
-  rr: number,
-  delta: number,
-  x?: number,
-  y?: number,
+  position: {
+    x: number,
+    y: number,
+  }
   connectedWith?: string[],
-  childNode?: boolean,
+  middleware?: boolean,
+  connections?: string[]
 }
 
 @Component({
@@ -22,123 +22,99 @@ export interface Station {
 })
 export class NgxGraphOrgTreeComponent implements OnInit {
   @Input() stations: Station[] = [];
+  @ViewChild('graph') graph!: GraphComponent;
 
   nodes: Node[] = [];
   links: Edge[] = [];
   layout = new CustomLayout();
-  settings: DagreNodesOnlySettings = {
-  }
+  settings: DagreNodesOnlySettings = {}
 
   constructor() {
+    const coords: any = { "МСК": { "x": 734.9390878481788, "y": 813.2687480869295 }, "ОКТ": { "x": 737.0609121518207, "y": 244.5079073563919 }, "МСКОКТ": { "x": 736, "y": 535 }, "СЕВ": { "x": 1567.3254769921436, "y": 245.52861952861826 }, "МСКСЕВ": { "x": 1219.139169472502, "y": 541.3479236812561 }, "ГОР": { "x": 1578.8751714677603, "y": 807.9561042523998 }, "МСКГОР": { "x": 1203.0178326474584, "y": 810.6995884773664 } };
     this.stations = [
       {
         id: 'МСК',
         connectedWith: [],
-        rr: 1,
-        pr: 2,
-        sd: 3,
-        delta: 0,
-        x: 0,
-        y: 0,
+        position: {
+          x: 0,
+          y: 0
+        }
+
       },
       {
         id: 'ОКТ',
-        connectedWith: ['МСК'],
-        rr: 1,
-        pr: 2,
-        sd: 3,
-        delta: 0,
-        x: 10,
-        y: 10,
+        connectedWith: [],
+        position: {
+          x: 10,
+          y: 10
+        }
       },
       {
-        id: 'ЮВС',
-        connectedWith: ['МСК'],
-        rr: 1,
-        pr: 2,
-        sd: 3,
-        delta: 0,
-        x: -10,
-        y: 10
+        id: 'МСКОКТ',
+        connectedWith: ['МСК', 'ОКТ'],
+        middleware: true,
+        connections: ['Поворово 1', 'Савелово', 'Ховрино', 'Шаховская', 'Осуга'],
+        position: {
+          x: 10,
+          y: 10
+        }
+      },
+
+      {
+        id: 'СЕВ',
+        connectedWith: [],
+        position: {
+          x: 10,
+          y: 10
+        }
       },
       {
-        id: 'ЮВС1',
-        connectedWith: ['МСК'],
-        rr: 1,
-        pr: 2,
-        sd: 3,
-        delta: 0,
-        x: 10,
-        y: -10
+        id: 'МСКСЕВ',
+        connectedWith: ['МСК', 'СЕВ'],
+        middleware: true,
+        connections: ['Александрово'],
+        position: {
+          x: 10,
+          y: 10
+        },
+      },
+
+      {
+        id: 'ГОР',
+        connectedWith: [],
+        position: {
+          x: 10,
+          y: 10
+        }
       },
       {
-        id: 'ЮВС2',
-        connectedWith: ['МСК'],
-        rr: 1,
-        pr: 2,
-        sd: 3,
-        delta: 0,
-        x: -10,
-        y: -10
-      },
-      {
-        id: 'ЮВС3',
-        connectedWith: ['МСК'],
-        rr: 1,
-        pr: 2,
-        sd: 3,
-        delta: 0,
-        x: 10,
-        y: 0
-      },
-      {
-        id: 'ЮВС4',
-        connectedWith: ['МСК'],
-        rr: 1,
-        pr: 2,
-        sd: 3,
-        delta: 0,
-        x: -10,
-        y: 0
-      },
-      {
-        id: 'ЮВС5',
-        connectedWith: ['МСК'],
-        rr: 1,
-        pr: 2,
-        sd: 3,
-        delta: 0,
-        x: 0,
-        y: 10
-      },
-      {
-        id: 'ЮВС6',
-        connectedWith: ['МСК'],
-        rr: 1,
-        pr: 2,
-        sd: 3,
-        delta: 0,
-        x: 0,
-        y: -10
-      },
+        id: 'МСКГОР',
+        connectedWith: ['МСК', 'ГОР'],
+        middleware: true,
+        connections: ['Петушки', 'Черусти'],
+        position: {
+          x: 10,
+          y: 10
+        },
+      }
     ];
+    this.stations = this.stations.map(station => {
+      station.position = coords[station.id];
+      return station;
+    })
+
+    console.log(this.stations);
 
     for (const station of this.stations) {
       const node: Node = {
         id: station.id,
         label: station.id,
-        position: {
-          x: (station?.x ?? 1) * 50,
-          y: (station?.y ?? 1) * 50
-        },
+        position: station.position,
         data: {
-          rr: station.rr,
-          pr: station.pr,
-          sd: station.sd,
-          delta: station.delta,
+          middleware: station?.middleware ?? false,
+          connections: station?.connections ?? []
         }
       };
-      console.log(node.position)
       this.nodes.push(node);
     }
 
@@ -162,6 +138,7 @@ export class NgxGraphOrgTreeComponent implements OnInit {
   }
 
   _switch = true;
+
   switch() {
     this._switch = !this._switch;
   }
@@ -182,5 +159,16 @@ export class NgxGraphOrgTreeComponent implements OnInit {
       result = (result + point[axis] - offsetMiddle)
     }
     return result / points.length;
+  }
+
+  getNodes() {
+    if (!this.graph) {
+      return;
+    }
+    let res: any = {};
+    this.graph.nodes.forEach(node => {
+      res[node.id] = node.position;
+    });
+    return res;
   }
 }

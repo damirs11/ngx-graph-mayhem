@@ -15,8 +15,6 @@ table {
 
   td {
     border: 1px solid black;
-    padding: 10px;
-    height: 50%;
 
     &:hover {
       color: red;
@@ -31,8 +29,8 @@ table {
   align-items: center;
   justify-content: space-between;
 
-  &:hover {
-    color: red;
+  &.center {
+    justify-content: center;
   }
 }
 
