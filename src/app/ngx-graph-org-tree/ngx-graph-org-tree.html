@@ -78,7 +78,8 @@
             <td>
               <div class="content">
                 <span>Пр</span>
-                <span>{{node.data.sd}}</span>
+<!--                <span>{{node.data.sd}}</span>-->
+                <div>{{node.position.x - node.position.y | number : "1.0-0"}}</div>
               </div>
             </td>
             <td>
@@ -107,39 +108,39 @@
           {{ link.label }}
         </textPath>
       </svg:text>
-      <svg:foreignObject width="200" height="125"
-                         [attr.x]="getMiddle(link, 'x', 200)"
-                         [attr.y]="getMiddle(link, 'y', 125)"
-      >
-        <table style="height: 100%; width: 100%;">
-          <tbody>
-          <tr>
-            <td>
-              <div class="content">
-              </div>
-            </td>
-            <td>
-              <div class="content">
-                <!--                <span>Рр</span>-->
-                <!--                <span>{{node.data.rr}}</span>-->
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="content">
-<!--                <span>Пр</span>-->
-              </div>
-            </td>
-            <td>
-              <div class="content">
-<!--                <span>Delta</span>-->
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </svg:foreignObject>
+<!--      <svg:foreignObject width="200" height="125"-->
+<!--                         [attr.x]="getMiddle(link, 'x', 200)"-->
+<!--                         [attr.y]="getMiddle(link, 'y', 125)"-->
+<!--      >-->
+<!--        <table style="height: 100%; width: 100%;">-->
+<!--          <tbody>-->
+<!--          <tr>-->
+<!--            <td>-->
+<!--              <div class="content">-->
+<!--              </div>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <div class="content">-->
+<!--                &lt;!&ndash;                <span>Рр</span>&ndash;&gt;-->
+<!--                &lt;!&ndash;                <span>{{node.data.rr}}</span>&ndash;&gt;-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          <tr>-->
+<!--            <td>-->
+<!--              <div class="content">-->
+<!--&lt;!&ndash;                <span>Пр</span>&ndash;&gt;-->
+<!--              </div>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--              <div class="content">-->
+<!--&lt;!&ndash;                <span>Delta</span>&ndash;&gt;-->
+<!--              </div>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--      </svg:foreignObject>-->
     </svg:g>
   </ng-template>
 
