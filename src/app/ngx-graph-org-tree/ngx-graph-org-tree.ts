@@ -3,10 +3,13 @@ import {CustomLayout} from "./custom-example";
 import {DagreNodesOnlySettings} from "../lib/graph/layouts/dagreNodesOnly";
 import {Edge, Node} from "../lib/models";
 import {GraphComponent} from "../lib/graph/graph.component";
+import {stations, coords} from "./data";
+import {Subject} from "rxjs";
+import {curveLinear} from "d3-shape";
 
 export interface Station {
   id: string,
-  position: {
+  position?: {
     x: number,
     y: number,
   }
@@ -28,78 +31,14 @@ export class NgxGraphOrgTreeComponent implements OnInit {
   links: Edge[] = [];
   layout = new CustomLayout();
   settings: DagreNodesOnlySettings = {}
+  center$: Subject<boolean> = new Subject();
+  zoomToFit$: Subject<boolean> = new Subject();
 
   constructor() {
-    const coords: any = { "МСК": { "x": 734.9390878481788, "y": 813.2687480869295 }, "ОКТ": { "x": 737.0609121518207, "y": 244.5079073563919 }, "МСКОКТ": { "x": 736, "y": 535 }, "СЕВ": { "x": 1567.3254769921436, "y": 245.52861952861826 }, "МСКСЕВ": { "x": 1219.139169472502, "y": 541.3479236812561 }, "ГОР": { "x": 1578.8751714677603, "y": 807.9561042523998 }, "МСКГОР": { "x": 1203.0178326474584, "y": 810.6995884773664 } };
-    this.stations = [
-      {
-        id: 'МСК',
-        connectedWith: [],
-        position: {
-          x: 0,
-          y: 0
-        }
-
-      },
-      {
-        id: 'ОКТ',
-        connectedWith: [],
-        position: {
-          x: 10,
-          y: 10
-        }
-      },
-      {
-        id: 'МСКОКТ',
-        connectedWith: ['МСК', 'ОКТ'],
-        middleware: true,
-        connections: ['Поворово 1', 'Савелово', 'Ховрино', 'Шаховская', 'Осуга'],
-        position: {
-          x: 10,
-          y: 10
-        }
-      },
-
-      {
-        id: 'СЕВ',
-        connectedWith: [],
-        position: {
-          x: 10,
-          y: 10
-        }
-      },
-      {
-        id: 'МСКСЕВ',
-        connectedWith: ['МСК', 'СЕВ'],
-        middleware: true,
-        connections: ['Александрово'],
-        position: {
-          x: 10,
-          y: 10
-        },
-      },
-
-      {
-        id: 'ГОР',
-        connectedWith: [],
-        position: {
-          x: 10,
-          y: 10
-        }
-      },
-      {
-        id: 'МСКГОР',
-        connectedWith: ['МСК', 'ГОР'],
-        middleware: true,
-        connections: ['Петушки', 'Черусти'],
-        position: {
-          x: 10,
-          y: 10
-        },
-      }
-    ];
+    const coordsData = coords;
+    this.stations = stations;
     this.stations = this.stations.map(station => {
-      station.position = coords[station.id];
+      station.position = coordsData[station.id];
       return station;
     })
 
@@ -135,6 +74,8 @@ export class NgxGraphOrgTreeComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.center$.next(true);
+    this.zoomToFit$.next(true);
   }
 
   _switch = true;

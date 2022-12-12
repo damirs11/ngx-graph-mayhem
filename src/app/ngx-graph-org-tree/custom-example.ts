@@ -44,7 +44,7 @@ export class CustomLayout extends DagreNodesOnlyLayout {
     let endingPoint;
     const curveDistance = this.settings.curveDistance || this.defaultSettings.curveDistance;
 
-    if (Math.abs(middle) <= 100) {
+    if (Math.abs(middle) <= 150) {
       // determine new arrow position
       const dirX = sourceNode.position.x <= targetNode.position.x ? -1 : 1;
       const dirY = sourceNode.position.y <= targetNode.position.y ? -1 : 1;

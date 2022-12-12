@@ -31,6 +31,8 @@
   </tbody>
 </table>
 <button (click)="switch()">switch</button>
+<button (click)="center$.next(true)">center$</button>
+<button (click)="zoomToFit$.next(true)">zoomToFit$</button>
 
 <div>
   <span>{{getNodes() | json}}</span>
@@ -42,6 +44,8 @@
   [showMiniMap]="true"
   [draggingEnabled]="true"
   [enableZoom]="true"
+  [center$]="center$"
+  [zoomToFit$]="zoomToFit$"
 
 
   [links]="links"
@@ -134,13 +138,6 @@
             <td>
             </td>
           </tr>
-<!--          <tr style="height: 20%">-->
-<!--            <td colspan="2">-->
-<!--              <div class="content">-->
-<!--                <span>Delta</span>-->
-<!--              </div>-->
-<!--            </td>-->
-<!--          </tr>-->
           </tbody>
         </table>
       </svg:foreignObject>
