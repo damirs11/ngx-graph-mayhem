@@ -1,3 +1,40 @@
+export interface Station {
+  id: string,
+  position?: {
+    x: number,
+    y: number,
+  }
+  middleware?: boolean,
+  connections?: string[]
+}
+
+export interface StationEdge {
+  source: string,
+  target: string,
+  direction?: {
+    start?: {
+      x: number,
+      y: number,
+    }
+    end?: {
+      x: number,
+      y: number,
+    }
+  }
+}
+
+export const DIR = {
+  'L': {x: -1, y: 0},
+  'T': {x: 0, y: -1},
+  'R': {x: 1, y: 0},
+  'B': {x: 0, y: 1},
+
+  'LT': {x: -1, y: -1},
+  'LB': {x: -1, y: 1},
+  'RT': {x: 1, y: -1},
+  'RB': {x: 1, y: 1},
+}
+
 export const coords: any = {
   "МСК": {"x": 734.9390878481788, "y": 813.2687480869295},
   "ОКТ": {"x": 737.0609121518207, "y": 250.15293662586868},
@@ -89,3 +126,125 @@ export const stations = [
     connections: ['Сураж', 'Красное', 'Заольша'],
   },
 ];
+
+export const stationEdges: StationEdge[] =
+  [
+    {
+      source: 'МСК',
+      target: 'МСКОКТ',
+      direction: {
+        start: DIR.T,
+        end: DIR.B
+      }
+    },
+    {
+      source: 'МСКОКТ',
+      target: 'ОКТ',
+      direction: {
+        start: DIR.T,
+        end: DIR.B
+      }
+    },
+
+    {
+      source: 'МСК',
+      target: 'МСКСЕВ',
+      direction: {
+        start: DIR.RT,
+        end: DIR.B
+      }
+    },
+    {
+      source: 'МСКСЕВ',
+      target: 'СЕВ',
+      direction: {
+        start: DIR.RT,
+        end: DIR.B
+      }
+    },
+
+    {
+      source: 'МСК',
+      target: 'МСКГОР',
+      direction: {
+        start: DIR.R,
+        end: DIR.L
+      }
+    },
+    {
+      source: 'МСКГОР',
+      target: 'ГОР',
+      direction: {
+        start: DIR.R,
+        end: DIR.L
+      }
+    },
+
+    {
+      source: 'МСК',
+      target: 'МСККБШ',
+      direction: {
+        start: DIR.RB,
+        end: DIR.T
+      }
+    },
+    {
+      source: 'МСККБШ',
+      target: 'КБШ',
+      direction: {
+        start: DIR.RB,
+        end: DIR.T
+      }
+    },
+
+    {
+      source: 'МСК',
+      target: 'МСКЮВС',
+      direction: {
+        start: DIR.B,
+        end: DIR.T
+      }
+    },
+    {
+      source: 'МСКЮВС',
+      target: 'ЮВС',
+      direction: {
+        start: DIR.B,
+        end: DIR.T
+      }
+    },
+
+    {
+      source: 'МСК',
+      target: 'МСКЮВСУКР',
+      direction: {
+        start: DIR.LB,
+        end: DIR.T
+      }
+    },
+    {
+      source: 'МСКЮВСУКР',
+      target: 'ЮВСУКР',
+      direction: {
+        start: DIR.LB,
+        end: DIR.T
+      }
+    },
+
+    {
+      source: 'МСК',
+      target: 'МСКБЕЛ',
+      direction: {
+        start: DIR.L,
+        end: DIR.R
+      }
+    },
+    {
+      source: 'МСКБЕЛ',
+      target: 'БЕЛ',
+      direction: {
+        start: DIR.L,
+        end: DIR.R
+      }
+    },
+  ];

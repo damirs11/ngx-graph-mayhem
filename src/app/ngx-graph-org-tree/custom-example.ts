@@ -36,61 +36,8 @@ export class CustomLayout extends DagreNodesOnlyLayout {
   override updateEdge(graph: Graph, edge: Edge): Graph {
     const sourceNode = graph.nodes!.find(n => n.id === edge.source) as Required<Node>;
     const targetNode = graph.nodes!.find(n => n.id === edge.target) as Required<Node>;
-    // const rankAxis: 'x' | 'y' = this.settings.orientation === 'BT' || this.settings.orientation === 'TB' ? 'y' : 'x';
-    const x = Math.abs(sourceNode.position.x - targetNode.position.x);
-    const y = Math.abs(sourceNode.position.y - targetNode.position.y);
-    const middle = x - y;
-    let startingPoint;
-    let endingPoint;
-    const curveDistance = this.settings.curveDistance || this.defaultSettings.curveDistance;
 
-    if (Math.abs(middle) <= 150) {
-      // determine new arrow position
-      const dirX = sourceNode.position.x <= targetNode.position.x ? -1 : 1;
-      const dirY = sourceNode.position.y <= targetNode.position.y ? -1 : 1;
-      startingPoint = {
-        x: sourceNode.position.x - dirX * (sourceNode.dimension.width / 2),
-        y: sourceNode.position.y - dirY * (sourceNode.dimension.height / 2)
-      };
-      endingPoint = {
-        x: targetNode.position.x + dirX * (targetNode.dimension.width / 2),
-        y: targetNode.position.y + dirY * (targetNode.dimension.height / 2)
-      };
-      // generate new points
-      edge.points = [
-        startingPoint,
-        endingPoint
-      ];
-    } else {
-      const rankAxis = x >= y ? 'x' : 'y';
-      const orderAxis: 'x' | 'y' = rankAxis === 'y' ? 'x' : 'y';
-      // @ts-ignore
-      const rankDimension = rankAxis === 'y' ? 'height' : 'width';
-      // determine new arrow position
-      const dir = sourceNode.position[rankAxis] <= targetNode.position[rankAxis] ? -1 : 1;
-      startingPoint = {
-        [orderAxis]: sourceNode.position[orderAxis],
-        [rankAxis]: sourceNode.position[rankAxis] - dir * (sourceNode.dimension[rankDimension] / 2)
-      };
-      endingPoint = {
-        [orderAxis]: targetNode.position[orderAxis],
-        [rankAxis]: targetNode.position[rankAxis] + dir * (targetNode.dimension[rankDimension] / 2)
-      };
-
-      // generate new points
-      edge.points = [
-        startingPoint,
-        {
-          [orderAxis]: startingPoint[orderAxis],
-          [rankAxis]: startingPoint[rankAxis] - dir * curveDistance!
-        },
-        {
-          [orderAxis]: endingPoint[orderAxis],
-          [rankAxis]: endingPoint[rankAxis] + dir * curveDistance!
-        },
-        endingPoint
-      ];
-    }
+    edge.points = this.directedUpdateEdge(sourceNode, targetNode, edge.data.direction);
 
     const edgeLabelId = `${edge.source}${EDGE_KEY_DELIM}${edge.target}${EDGE_KEY_DELIM}${DEFAULT_EDGE_NAME}`;
     const matchingEdgeLabel = graph.edgeLabels[edgeLabelId];
@@ -98,6 +45,20 @@ export class CustomLayout extends DagreNodesOnlyLayout {
       matchingEdgeLabel.points = edge.points;
     }
     return graph;
+  }
+
+  directedUpdateEdge(sourceNode: Required<Node>, targetNode: Required<Node>, direction: any): any[] {
+    const x = Math.abs(sourceNode.position.x - targetNode.position.x);
+    const y = Math.abs(sourceNode.position.y - targetNode.position.y);
+    let startingPoint = {
+      x: sourceNode.position.x + direction.start.x * (sourceNode.dimension.width / 2),
+      y: sourceNode.position.y + direction.start.y * (sourceNode.dimension.height / 2)
+    };
+    let endingPoint = {
+      x: targetNode.position.x + direction.end.x * (targetNode.dimension.width / 2),
+      y: targetNode.position.y + direction.end.y * (targetNode.dimension.height / 2)
+    };
+    return [startingPoint, endingPoint];
   }
 
   override createDagreGraph(graph: Graph): any {

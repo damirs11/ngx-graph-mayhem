@@ -3,20 +3,8 @@ import {CustomLayout} from "./custom-example";
 import {DagreNodesOnlySettings} from "../lib/graph/layouts/dagreNodesOnly";
 import {Edge, Node} from "../lib/models";
 import {GraphComponent} from "../lib/graph/graph.component";
-import {stations, coords} from "./data";
+import {coords, DIR, Station, StationEdge, stationEdges, stations} from "./data";
 import {Subject} from "rxjs";
-import {curveLinear} from "d3-shape";
-
-export interface Station {
-  id: string,
-  position?: {
-    x: number,
-    y: number,
-  }
-  connectedWith?: string[],
-  middleware?: boolean,
-  connections?: string[]
-}
 
 @Component({
   selector: 'ngx-graph-org-tree',
@@ -25,6 +13,7 @@ export interface Station {
 })
 export class NgxGraphOrgTreeComponent implements OnInit {
   @Input() stations: Station[] = [];
+  @Input() edges: StationEdge[] = [];
   @ViewChild('graph') graph!: GraphComponent;
 
   nodes: Node[] = [];
@@ -40,9 +29,8 @@ export class NgxGraphOrgTreeComponent implements OnInit {
     this.stations = this.stations.map(station => {
       station.position = coordsData[station.id];
       return station;
-    })
-
-    console.log(this.stations);
+    });
+    this.edges = stationEdges;
 
     for (const station of this.stations) {
       const node: Node = {
@@ -57,19 +45,20 @@ export class NgxGraphOrgTreeComponent implements OnInit {
       this.nodes.push(node);
     }
 
-    for (const station of this.stations) {
-      if (!station.connectedWith) {
-        continue;
-      }
-
-      station.connectedWith.forEach(connectionId => {
-        const edge: Edge = {
-          source: connectionId,
-          target: station.id,
-          label: `${connectionId} - ${station.id}`,
-        };
-        this.links.push(edge);
-      })
+    for (const edge of this.edges) {
+      const ngxEdge: Edge = {
+        id: `${edge.source}${edge.target}`,
+        source: edge.source,
+        target: edge.target,
+        label: `${edge.source} - ${edge.target}`,
+        data: {
+          direction: {
+            start: edge?.direction?.start,
+            end: edge?.direction?.end
+          }
+        }
+      };
+      this.links.push(ngxEdge);
     }
   }
 

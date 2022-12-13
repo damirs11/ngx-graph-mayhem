@@ -54,15 +54,6 @@
   [layoutSettings]="settings"
 >
 
-  <ng-template #defsTemplate>
-    <svg:marker id="arrow-R" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
-      <svg:path d="M0,-5L10,0L0,5" class="arrow-head"/>
-    </svg:marker>
-    <svg:marker id="arrow-L" viewBox="-10 -5 10 10" refX="-8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
-      <svg:path d="M0,-5L-10,0L0,5" class="arrow-head"/>
-    </svg:marker>
-  </ng-template>
-
   <ng-template #nodeTemplate let-node>
     <svg:g class="node">
       <svg:foreignObject width="200" height="125" *ngIf="!node.data.middleware">
@@ -141,6 +132,13 @@
           </tbody>
         </table>
       </svg:foreignObject>
+    </svg:g>
+  </ng-template>
+
+
+  <ng-template #linkTemplate let-link>
+    <svg:g class="edge">
+      <svg:path class="line" stroke-width="2"></svg:path>
     </svg:g>
   </ng-template>
 </ngx-graph>
