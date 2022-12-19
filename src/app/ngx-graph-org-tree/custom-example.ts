@@ -85,7 +85,6 @@ export class CustomLayout extends DagreNodesOnlyLayout {
       };
     });
 
-    console.log(graph);
     this.dagreNodes = graph.nodes.map(n => {
       const node: any = Object.assign({}, n);
       node.width = n.dimension!.width;

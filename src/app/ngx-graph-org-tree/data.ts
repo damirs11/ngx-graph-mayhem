@@ -1,250 +1,44 @@
-export interface Station {
+export type Position = { x: number, y: number }
+export type Direction = 'L' | 'T' | 'R' | 'B' | 'LT' | 'LB' | 'RT' | 'RB';
+export type DirectionValue = Record<Direction, Position>;
+export type NodeData = {
   id: string,
-  position?: {
-    x: number,
-    y: number,
-  }
+  position?: Position,
   middleware?: boolean,
   connections?: string[]
 }
-
-export interface StationEdge {
+export type EdgeData = {
   source: string,
   target: string,
-  direction?: {
-    start?: {
-      x: number,
-      y: number,
-    }
-    end?: {
-      x: number,
-      y: number,
-    }
+  direction: {
+    start: Position
+    end: Position
   }
 }
 
-export const DIR = {
-  'L': {x: -1, y: 0},
-  'T': {x: 0, y: -1},
-  'R': {x: 1, y: 0},
-  'B': {x: 0, y: 1},
+const DIR: DirectionValue = {
+  L: {x: -1, y: 0},
+  T: {x: 0, y: -1},
+  R: {x: 1, y: 0},
+  B: {x: 0, y: 1},
+  LT: {x: -1, y: -1},
+  LB: {x: -1, y: 1},
+  RT: {x: 1, y: -1},
+  RB: {x: 1, y: 1},
+} as const;
 
-  'LT': {x: -1, y: -1},
-  'LB': {x: -1, y: 1},
-  'RT': {x: 1, y: -1},
-  'RB': {x: 1, y: 1},
+const nodes: NodeData[] = [{"id":"МСК","position":{"x":734.9390878481788,"y":822.4136955034817},"middleware":false,"connections":[]},{"id":"ОКТ","position":{"x":737.0609121518207,"y":250.15293662586868},"middleware":false,"connections":[]},{"id":"МСКОКТ","position":{"x":737.8816764231581,"y":510.5382064989346},"middleware":true,"connections":["Поворово 1","Савелово","Ховрино","Шаховская","Осуга"]},{"id":"СЕВ","position":{"x":1339.6426297899136,"y":503.31828950139135},"middleware":false,"connections":[]},{"id":"МСКСЕВ","position":{"x":1047.9066149650396,"y":648.603479801313},"middleware":true,"connections":["Александрово"]},{"id":"ГОР","position":{"x":1407.6426169603,"y":822.3885624180284},"middleware":false,"connections":[]},{"id":"МСКГОР","position":{"x":1054.0078766975048,"y":821.7262123170775},"middleware":true,"connections":["Петушки","Черусти"]},{"id":"КБШ","position":{"x":1339.75361328915,"y":1166.6393823585304},"middleware":false,"connections":[]},{"id":"МСККБШ","position":{"x":1038.685385583723,"y":1006.6968863900223},"middleware":true,"connections":["Кустаревка"]},{"id":"ЮВС","position":{"x":737.097470235056,"y":1319.2433402767165},"middleware":false,"connections":[]},{"id":"МСКЮВС","position":{"x":736.6763196667165,"y":1132.9573743839828},"middleware":true,"connections":["Елец","Ефремов","Курск","Пост 315 км"]},{"id":"БЕЛ","position":{"x":-62.297057086634396,"y":827.7026213253184},"middleware":false,"connections":[]},{"id":"МСКБЕЛ","position":{"x":347.1693000728212,"y":820.8437060746152},"middleware":true,"connections":["Сураж","Красное","Заольша"]},{"id":"ОКТФИН","position":{"x":735.0933272892909,"y":47.18583544035877},"middleware":true,"connections":[]},{"id":"ФИН","position":{"x":735.3371153289486,"y":-138.86772002912826},"middleware":false,"connections":[]},{"id":"ЛАТ","position":{"x":-66.55449039361578,"y":248.87069273787674},"middleware":false,"connections":[]},{"id":"ОКТЛАТ","position":{"x":345.3244386029655,"y":250.33818978720132},"middleware":true,"connections":[]},{"id":"ЭСТ","position":{"x":-64.75194610172821,"y":-107.50763948338789},"middleware":false,"connections":[]},{"id":"ЭСТОКТ","position":{"x":341.13664554700557,"y":42.99869994562018},"middleware":true,"connections":[]},{"id":"СКВ","position":{"x":735.1493527654128,"y":1718.870612459852},"middleware":false,"connections":[]},{"id":"СКВЮВС","position":{"x":735.6674000234685,"y":1510.2684505131472},"middleware":true,"connections":[]},{"id":"АЗР","position":{"x":734.6831477862193,"y":2119.036261415151},"middleware":false,"connections":[]},{"id":"АЗРСКВ","position":{"x":734.899286190628,"y":1929.69580734733},"middleware":true,"connections":[]},{"id":"ТРЗ","position":{"x":-34.166620832804284,"y":2114.725054292526},"middleware":false,"connections":[]},{"id":"ТРЗАЗР","position":{"x":335.2776611406937,"y":2117.8733312702434},"middleware":true,"connections":[]},{"id":"ЮКЖ","position":{"x":-748.7893802347165,"y":2117.003963148086},"middleware":false,"connections":[]},{"id":"ЮКЖГРЗ","position":{"x":-414.54758828489577,"y":2117.0374693824583},"middleware":true,"connections":[]},{"id":"КРМ","position":{"x":-32.0290054697234,"y":1722.7951339344338},"middleware":false,"connections":[]},{"id":"КРМСКВ","position":{"x":354.0047779635626,"y":1722.525862095253},"middleware":true,"connections":[]},{"id":"УКР","position":{"x":-64.58016184019056,"y":1312.231286726646},"middleware":false,"connections":[]},{"id":"УКРЮВС","position":{"x":338.4485523931215,"y":1316.2391393582238},"middleware":true,"connections":[]},{"id":"БЕЛОКТ","position":{"x":298.6210201149387,"y":519.0921393855551},"middleware":true,"connections":[]},{"id":"МСКУКР","position":{"x":321.54964528795347,"y":1100.7748985077342},"middleware":true,"connections":[]},{"id":"УКРСКВ","position":{"x":319.54389192647125,"y":1503.2861379799117},"middleware":true,"connections":[]},{"id":"ТРЗСКВ","position":{"x":315.2060920258067,"y":1928.5779171481029},"middleware":true,"connections":[]},{"id":"БЕЛУКР","position":{"x":-63.10013717421133,"y":1098.7654320987656},"middleware":true,"connections":[]},{"id":"ЛАТБЕЛ","position":{"x":-64.47187928669416,"y":519.8902606310013},"middleware":true,"connections":[]},{"id":"ЭСТЛАТ","position":{"x":-66.1632373113855,"y":80.78052126200274},"middleware":true,"connections":[]},{"id":"МЛД","position":{"x":-863.2484510045889,"y":1300.3016005277486},"middleware":false,"connections":[]},{"id":"МЛДУКР","position":{"x":-447.2052859301825,"y":1302.3011073791024},"middleware":true,"connections":[]},{"id":"ЛИТ","position":{"x":-922.5762021736264,"y":826.8037637248741},"middleware":false,"connections":[]},{"id":"КЛГ","position":{"x":-920.2454576836963,"y":246.2682693413155},"middleware":false,"connections":[]},{"id":"ЛИТКЛГ","position":{"x":-921.5313093131971,"y":511.21818275956446},"middleware":true,"connections":[]},{"id":"ЛИТЛАТ","position":{"x":-493.89155204377244,"y":514.7775131998525},"middleware":true,"connections":[]},{"id":"ЛИТБЕЛ","position":{"x":-487.7486222919839,"y":825.6097586403354},"middleware":true,"connections":[]}]; const edges: EdgeData[] = [{"source":"МСК","target":"МСКОКТ","direction":{"start":{"x":0,"y":-1},"end":{"x":0,"y":1}}},{"source":"МСКОКТ","target":"ОКТ","direction":{"start":{"x":0,"y":-1},"end":{"x":0,"y":1}}},{"source":"МСК","target":"МСКСЕВ","direction":{"start":{"x":1,"y":-1},"end":{"x":0,"y":1}}},{"source":"МСКСЕВ","target":"СЕВ","direction":{"start":{"x":1,"y":-1},"end":{"x":0,"y":1}}},{"source":"МСК","target":"МСКГОР","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"МСКГОР","target":"ГОР","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"МСК","target":"МСККБШ","direction":{"start":{"x":1,"y":1},"end":{"x":0,"y":-1}}},{"source":"МСККБШ","target":"КБШ","direction":{"start":{"x":1,"y":1},"end":{"x":0,"y":-1}}},{"source":"МСК","target":"МСКЮВС","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"МСКЮВС","target":"ЮВС","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"МСК","target":"МСКБЕЛ","direction":{"start":{"x":-1,"y":0},"end":{"x":1,"y":0}}},{"source":"МСКБЕЛ","target":"БЕЛ","direction":{"start":{"x":-1,"y":0},"end":{"x":1,"y":0}}},{"source":"ОКТФИН","target":"ОКТ","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"ФИН","target":"ОКТФИН","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"ЛАТ","target":"ОКТЛАТ","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"ОКТЛАТ","target":"ОКТ","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"ЭСТОКТ","target":"ОКТ","direction":{"start":{"x":1,"y":1},"end":{"x":-1,"y":-1}}},{"source":"ЭСТ","target":"ЭСТОКТ","direction":{"start":{"x":1,"y":1},"end":{"x":-1,"y":-1}}},{"source":"ЮВС","target":"СКВЮВС","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"СКВЮВС","target":"СКВ","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"СКВ","target":"АЗРСКВ","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"АЗРСКВ","target":"АЗР","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"АЗР","target":"ТРЗАЗР","direction":{"start":{"x":-1,"y":0},"end":{"x":1,"y":0}}},{"source":"ТРЗАЗР","target":"ТРЗ","direction":{"start":{"x":-1,"y":0},"end":{"x":1,"y":0}}},{"source":"ТРЗ","target":"ЮКЖГРЗ","direction":{"start":{"x":-1,"y":0},"end":{"x":1,"y":0}}},{"source":"ЮКЖГРЗ","target":"ЮКЖ","direction":{"start":{"x":-1,"y":0},"end":{"x":1,"y":0}}},{"source":"КРМ","target":"КРМСКВ","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"КРМСКВ","target":"СКВ","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"УКР","target":"УКРЮВС","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"УКРЮВС","target":"ЮВС","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"БЕЛ","target":"БЕЛОКТ","direction":{"start":{"x":1,"y":-1},"end":{"x":-1,"y":1}}},{"source":"БЕЛОКТ","target":"ОКТ","direction":{"start":{"x":1,"y":-1},"end":{"x":-1,"y":1}}},{"source":"МСКУКР","target":"УКР","direction":{"start":{"x":-1,"y":1},"end":{"x":1,"y":-1}}},{"source":"МСКУКР","target":"МСК","direction":{"start":{"x":1,"y":-1},"end":{"x":-1,"y":1}}},{"source":"УКР","target":"УКРСКВ","direction":{"start":{"x":1,"y":1},"end":{"x":-1,"y":-1}}},{"source":"УКРСКВ","target":"СКВ","direction":{"start":{"x":1,"y":1},"end":{"x":-1,"y":-1}}},{"source":"ТРЗ","target":"ТРЗСКВ","direction":{"start":{"x":1,"y":-1},"end":{"x":-1,"y":1}}},{"source":"ТРЗСКВ","target":"СКВ","direction":{"start":{"x":1,"y":-1},"end":{"x":-1,"y":1}}},{"source":"ЭСТ","target":"ЭСТЛАТ","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"ЭСТЛАТ","target":"ЛАТ","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"ЛАТ","target":"ЛАТБЕЛ","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"ЛАТБЕЛ","target":"БЕЛ","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"БЕЛ","target":"БЕЛУКР","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"БЕЛУКР","target":"УКР","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"МЛД","target":"МЛДУКР","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"МЛДУКР","target":"УКР","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"КЛГ","target":"ЛИТКЛГ","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"ЛИТКЛГ","target":"ЛИТ","direction":{"start":{"x":0,"y":1},"end":{"x":0,"y":-1}}},{"source":"ЛИТ","target":"ЛИТЛАТ","direction":{"start":{"x":1,"y":-1},"end":{"x":-1,"y":1}}},{"source":"ЛИТЛАТ","target":"ЛАТ","direction":{"start":{"x":1,"y":-1},"end":{"x":-1,"y":1}}},{"source":"ЛИТ","target":"ЛИТБЕЛ","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}},{"source":"ЛИТБЕЛ","target":"БЕЛ","direction":{"start":{"x":1,"y":0},"end":{"x":-1,"y":0}}}]
+
+
+
+
+
+
+
+
+
+export const data = {
+  nodes: nodes,
+  edges: edges,
+  dirs: DIR
 }
-
-export const coords: any = {
-  "МСК": {"x": 734.9390878481788, "y": 813.2687480869295},
-  "ОКТ": {"x": 737.0609121518207, "y": 250.15293662586868},
-  "МСКОКТ": {"x": 737.8816764231581, "y": 510.5382064989346},
-  "СЕВ": {"x": 1339.6426297899136, "y": 503.31828950139135},
-  "МСКСЕВ": {"x": 1047.9066149650396, "y": 648.603479801313},
-  "ГОР": {"x": 1407.6426169603, "y": 811.7194570987175},
-  "МСКГОР": {"x": 1052.483718794746, "y": 812.5812649005253},
-  "КБШ": {"x": 1339.75361328915, "y": 1166.6393823585304},
-  "МСККБШ": {"x": 1038.685385583723, "y": 1006.6968863900223},
-  "ЮВС": {"x": 737.097470235056, "y": 1319.2433402767165},
-  "МСКЮВС": {"x": 736.6763196667165, "y": 1132.9573743839828},
-  "ЮВСУКР": {"x": 152.41579027587258, "y": 1117.7157953563978},
-  "МСКЮВСУКР": {"x": 448.7798269234031, "y": 965.3000050805231},
-  "БЕЛ": {"x": 77.90140391877935, "y": 816.2712323663401},
-  "МСКБЕЛ": {"x": 408.13561618317004, "y": 816.2712323663391}
-};
-export const stations = [
-  {
-    id: 'МСК',
-  },
-  {
-    id: 'ОКТ',
-  },
-  {
-    id: 'МСКОКТ',
-    connectedWith: ['МСК', 'ОКТ'],
-    middleware: true,
-    connections: ['Поворово 1', 'Савелово', 'Ховрино', 'Шаховская', 'Осуга'],
-  },
-
-  {
-    id: 'СЕВ',
-  },
-  {
-    id: 'МСКСЕВ',
-    connectedWith: ['МСК', 'СЕВ'],
-    middleware: true,
-    connections: ['Александрово'],
-  },
-
-  {
-    id: 'ГОР',
-  },
-  {
-    id: 'МСКГОР',
-    connectedWith: ['МСК', 'ГОР'],
-    middleware: true,
-    connections: ['Петушки', 'Черусти'],
-  },
-
-  {
-    id: 'КБШ',
-  },
-  {
-    id: 'МСККБШ',
-    connectedWith: ['МСК', 'КБШ'],
-    middleware: true,
-    connections: ['Кустаревка'],
-  },
-
-  {
-    id: 'ЮВС',
-  },
-  {
-    id: 'МСКЮВС',
-    connectedWith: ['МСК', 'ЮВС'],
-    middleware: true,
-    connections: ['Елец', 'Ефремов', 'Курск', 'Пост 315 км'],
-  },
-
-  {
-    id: 'ЮВСУКР',
-  },
-  {
-    id: 'МСКЮВСУКР',
-    connectedWith: ['МСК', 'ЮВСУКР'],
-    middleware: true,
-    connections: ['Зерново', 'Красное', 'Теткино'],
-  },
-
-  {
-    id: 'БЕЛ',
-  },
-  {
-    id: 'МСКБЕЛ',
-    connectedWith: ['МСК', 'БЕЛ'],
-    middleware: true,
-    connections: ['Сураж', 'Красное', 'Заольша'],
-  },
-];
-
-export const stationEdges: StationEdge[] =
-  [
-    {
-      source: 'МСК',
-      target: 'МСКОКТ',
-      direction: {
-        start: DIR.T,
-        end: DIR.B
-      }
-    },
-    {
-      source: 'МСКОКТ',
-      target: 'ОКТ',
-      direction: {
-        start: DIR.T,
-        end: DIR.B
-      }
-    },
-
-    {
-      source: 'МСК',
-      target: 'МСКСЕВ',
-      direction: {
-        start: DIR.RT,
-        end: DIR.B
-      }
-    },
-    {
-      source: 'МСКСЕВ',
-      target: 'СЕВ',
-      direction: {
-        start: DIR.RT,
-        end: DIR.B
-      }
-    },
-
-    {
-      source: 'МСК',
-      target: 'МСКГОР',
-      direction: {
-        start: DIR.R,
-        end: DIR.L
-      }
-    },
-    {
-      source: 'МСКГОР',
-      target: 'ГОР',
-      direction: {
-        start: DIR.R,
-        end: DIR.L
-      }
-    },
-
-    {
-      source: 'МСК',
-      target: 'МСККБШ',
-      direction: {
-        start: DIR.RB,
-        end: DIR.T
-      }
-    },
-    {
-      source: 'МСККБШ',
-      target: 'КБШ',
-      direction: {
-        start: DIR.RB,
-        end: DIR.T
-      }
-    },
-
-    {
-      source: 'МСК',
-      target: 'МСКЮВС',
-      direction: {
-        start: DIR.B,
-        end: DIR.T
-      }
-    },
-    {
-      source: 'МСКЮВС',
-      target: 'ЮВС',
-      direction: {
-        start: DIR.B,
-        end: DIR.T
-      }
-    },
-
-    {
-      source: 'МСК',
-      target: 'МСКЮВСУКР',
-      direction: {
-        start: DIR.LB,
-        end: DIR.T
-      }
-    },
-    {
-      source: 'МСКЮВСУКР',
-      target: 'ЮВСУКР',
-      direction: {
-        start: DIR.LB,
-        end: DIR.T
-      }
-    },
-
-    {
-      source: 'МСК',
-      target: 'МСКБЕЛ',
-      direction: {
-        start: DIR.L,
-        end: DIR.R
-      }
-    },
-    {
-      source: 'МСКБЕЛ',
-      target: 'БЕЛ',
-      direction: {
-        start: DIR.L,
-        end: DIR.R
-      }
-    },
-  ];

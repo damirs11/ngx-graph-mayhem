@@ -1,5 +1,5 @@
 :host ::ng-deep {
-  display: block;
+  display: flex;
   height: inherit;
   width: inherit;
 
@@ -36,4 +36,31 @@ table {
 
 g.node rect,text {
   cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+
+  .button-row {
+    display: flex;
+  }
+
+  .form {
+    padding-top: 50px;
+
+    display: flex;
+    flex-direction: column;
+    ::ng-deep mat-form-field {
+      width: 100%;
+    }
+
+    .form-row {
+      display: flex;
+    }
+  }
+}
+
+.graph {
+  flex: 1
 }
