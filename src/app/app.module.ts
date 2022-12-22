@@ -13,11 +13,13 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSelectModule} from "@angular/material/select";
+import { WagsFlowGraphComponent } from './wags-flow-graph/wags-flow-graph.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NgxGraphOrgTreeComponent,
+    WagsFlowGraphComponent,
   ],
   imports: [
     FormsModule,

@@ -64,3 +64,17 @@ g.node rect,text {
 .graph {
   flex: 1
 }
+
+::ng-deep .mat-form-field {
+  width: 120px !important;
+}
+
+::ng-deep .background {
+  fill: none !important;
+  pointer-events: all !important;
+}
+
+::ng-deep .x, ::ng-deep .y {
+  fill: none;
+  stroke: #333;
+}

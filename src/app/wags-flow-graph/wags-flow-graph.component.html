@@ -1,0 +1,102 @@
+  <ngx-graph
+    xmlns:svg="http://www.w3.org/2000/svg"
+    #graph
+    [draggingEnabled]="false"
+    [draggable]="false"
+    [enableZoom]="true"
+    [center$]="center$"
+    [zoomToFit$]="zoomToFit$"
+
+    [links]="links"
+    [nodes]="nodes"
+    [layout]="layout"
+  >
+
+    <ng-template #nodeTemplate let-node>
+      <svg:g class="node">
+        <svg:foreignObject width="200" height="125" *ngIf="!node.data.middleware">
+          <table style="height: 100%; width: 100%;">
+            <tbody>
+            <tr>
+              <td colspan="2">
+                <div class="content center bold">
+                  <span>{{node.id}}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 50%;">
+                <span>Прием</span>
+              </td>
+              <td style="width: 50%;" >
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>Сдача</span>
+              </td>
+              <td>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div class="content">
+                  <span>REMOVE</span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </svg:foreignObject>
+
+        <svg:foreignObject [attr.height]="30*2 + node.data.connections.length*22 " width="350" *ngIf="node.data.middleware">
+          <table style="height: 100%; width: 100%;">
+            <tbody>
+            <tr>
+              <td style="width: 40%;">
+                <div class="content center">
+                  <span>{{node.id}}</span>
+                </div>
+              </td>
+              <td style="width: 30%;">
+                <div class="content">
+                  <span>Прием</span>
+                </div>
+              </td>
+              <td style="width: 30%;">
+                <div class="content">
+                  <span>Сдача</span>
+                </div>
+              </td>
+            </tr>
+            <tr *ngFor="let connection of node.data.connections">
+              <td>
+                <span>{{connection}}</span>
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>ИТОГО</span>
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </svg:foreignObject>
+      </svg:g>
+    </ng-template>
+
+
+    <ng-template #linkTemplate let-link>
+      <svg:g class="edge">
+        <svg:path class="line" stroke-width="2" d=""></svg:path>
+      </svg:g>
+    </ng-template>
+  </ngx-graph>
