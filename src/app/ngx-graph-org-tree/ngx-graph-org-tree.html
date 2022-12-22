@@ -1,8 +1,19 @@
-<div class="controls">
+<div class="controls" *ngIf="!isHidden">
   <div class="button-row">
     <button mat-button (click)="printNodeDataToConsole()">Print node coords</button>
     <button mat-button (click)="center$.next(true)">center$</button>
     <button mat-button (click)="zoomToFit$.next(true)">zoomToFit$</button>
+  </div>
+
+  <div class="button-row">
+    <button mat-button (click)="showGrid()">show grid</button>
+    <button mat-button (click)="hideGrid()">hide grid</button>
+
+    <button mat-button (click)="hideControls()"><-</button>
+  </div>
+
+  <div class="button-row">
+    <button mat-button (click)="this.update$.next(true)">update</button>
   </div>
 
   <form [formGroup]="formNode">
@@ -53,6 +64,8 @@
           </mat-select>
         </mat-form-field>
 
+        <button mat-button color="accent" (click)="swapSourceTarget()"><-></button>
+
         <mat-form-field appearance="fill">
           <mat-select formControlName="end">
             <mat-option *ngFor="let keyValue of direction | keyvalue" [value]="keyValue.value">
@@ -71,16 +84,12 @@
   <ngx-graph
     xmlns:svg="http://www.w3.org/2000/svg"
     #graph
-    *ngIf="_switch"
     [showMiniMap]="true"
-    [draggingEnabled]="true"
+    [draggingEnabled]="false"
     [enableZoom]="true"
     [center$]="center$"
     [zoomToFit$]="zoomToFit$"
     [update$]="update$"
-
-    [minZoomLevel]="0.6"
-    [maxZoomLevel]="1.00"
 
     [links]="links"
     [nodes]="nodes"
@@ -117,8 +126,7 @@
             <tr>
               <td colspan="2">
                 <div class="content">
-<!--                  <span (click)="remove(node)">REMOVE</span>-->
-                  <button mat-raised-button (click)="removeNode(node)">REMOVE</button>
+                  <span>REMOVE</span>
                 </div>
               </td>
             </tr>
@@ -158,8 +166,8 @@
             </tr>
             <tr>
               <td>
-<!--                <span>ИТОГО</span>-->
-                <button mat-raised-button (click)="removeNode(node)">REMOVE</button>
+                <span>ИТОГО</span>
+<!--                <button mat-raised-button (click)="removeNode(node)">REMOVE</button>-->
               </td>
               <td>
               </td>

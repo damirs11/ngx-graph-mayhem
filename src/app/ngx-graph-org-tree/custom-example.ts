@@ -8,8 +8,11 @@ const GRAPH_NODE = '\x00';
 const EDGE_KEY_DELIM = '\x01';
 
 export class CustomLayout extends DagreNodesOnlyLayout {
+  graph!: Graph;
+
   override run(graph: Graph): Graph {
     this.createDagreGraph(graph);
+    this.graph = graph;
     // dagre.layout(this.dagreGraph);
 
     graph.edgeLabels = this.dagreGraph._edgeLabels;
@@ -63,7 +66,7 @@ export class CustomLayout extends DagreNodesOnlyLayout {
 
   override createDagreGraph(graph: Graph): any {
     const settings = Object.assign({}, this.defaultSettings, this.settings);
-    this.dagreGraph = new dagre.graphlib.Graph({ compound: settings.compound, multigraph: settings.multigraph });
+    this.dagreGraph = new dagre.graphlib.Graph({compound: settings.compound, multigraph: settings.multigraph});
     this.dagreGraph.setGraph({
       rankdir: settings.orientation,
       marginx: settings.marginX,
@@ -125,4 +128,31 @@ export class CustomLayout extends DagreNodesOnlyLayout {
 
     return this.dagreGraph;
   }
+
+  onDragEnd(draggingNode: Node, $event: MouseEvent): void {
+    if (!draggingNode || !this.graph || !($event.target instanceof HTMLTableCellElement)) {
+      return;
+    }
+
+    let nodeX = draggingNode.position!.x - draggingNode.position!.x % this.settings.nodeWidth;
+    let nodeY = draggingNode.position!.y - draggingNode.position!.y % this.settings.nodeHeight;
+
+
+    nodeX = nodeX < 0 ? 0 : nodeX;
+    nodeY = nodeY < 0 ? 0 : nodeY;
+
+    // nodeX = nodeX - draggingNode.dimension!.width / 2
+    // nodeY = nodeY - draggingNode.dimension!.height / 2
+    // console.log(nodeX, nodeY, $event);
+
+    // draggingNode.transform = `translate(${nodeX}, ${nodeY})`;
+    this.graph.nodes.map(n => {
+      if (n.id === draggingNode.id) {
+        n.position = {x: nodeX, y: nodeY};
+        n.transform = `translate(${nodeX}, ${nodeY})`;
+      }
+      return n;
+    });
+  }
 }
+

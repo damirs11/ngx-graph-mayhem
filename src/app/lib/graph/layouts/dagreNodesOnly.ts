@@ -25,7 +25,7 @@ export class DagreNodesOnlyLayout implements Layout {
     multigraph: true,
     compound: true
   };
-  settings: DagreNodesOnlySettings = {};
+  settings: any;
 
   dagreGraph: any;
   dagreNodes: any;

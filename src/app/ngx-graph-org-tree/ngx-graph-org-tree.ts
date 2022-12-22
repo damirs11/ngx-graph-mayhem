@@ -1,31 +1,36 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {CustomLayout} from "./custom-example";
 import {DagreNodesOnlySettings} from "../lib/graph/layouts/dagreNodesOnly";
 import {Edge, Node} from "../lib/models";
 import {GraphComponent} from "../lib/graph/graph.component";
 import {Subject} from "rxjs";
-import {data, Direction, EdgeData} from "./data";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {data, EdgeData} from "./data";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {select} from "d3-selection";
+import {range} from "d3-array";
+import * as shape from "d3-shape";
+import {line} from "d3-shape";
 
 @Component({
   selector: 'ngx-graph-org-tree',
   templateUrl: './ngx-graph-org-tree.html',
   styleUrls: ['./ngx-graph-org-tree.scss']
 })
-export class NgxGraphOrgTreeComponent implements OnInit {
+export class NgxGraphOrgTreeComponent implements OnInit, AfterViewInit {
   @ViewChild('graph') graph!: GraphComponent;
 
   formNode: FormGroup = new FormGroup({});
   formEdge: FormGroup = new FormGroup({});
   direction = data.dirs;
+  isHidden = false;
 
   nodes: Node[] = [];
   links: Edge[] = [];
   layout = new CustomLayout();
-  settings: DagreNodesOnlySettings = {}
   center$: Subject<boolean> = new Subject();
   zoomToFit$: Subject<boolean> = new Subject();
   update$: Subject<boolean> = new Subject();
+
 
   constructor(private fb: FormBuilder) {
     for (const nodeData of data.nodes) {
@@ -53,13 +58,70 @@ export class NgxGraphOrgTreeComponent implements OnInit {
       start: [""],
       end: [""]
     });
+
+
   }
 
-  _switch = true;
-
-  switch() {
-    this._switch = !this._switch;
+  ngAfterViewInit() {
+    this.showGrid();
   }
+
+  settings = {
+    width: 10000,
+    height: 10000,
+    nodeWidth: 150,
+    nodeHeight: 150
+  }
+
+  showGrid() {
+    const width = this.settings.width,
+      height = this.settings.height,
+      xStepsBig = range(0, width, this.settings.nodeWidth),
+      yStepsBig = range(0, height, this.settings.nodeHeight),
+      xStepsSmall = range(0, width, this.settings.nodeWidth),
+      yStepsSmall = range(0, height, this.settings.nodeHeight);
+
+
+    const graph = select(".chart");
+    graph.insert("g", ":first-child")
+      .attr("class", "grid")
+    const grid = select(".grid");
+
+    grid.append("rect")
+      .attr("class", "background")
+      .attr("width", width)
+      .attr("height", height);
+
+    grid.selectAll(".x")
+      .data(xStepsBig)
+      .enter().append("path")
+      .attr("class", "x")
+      .datum(function (x) {
+        return yStepsSmall.map(function (y) {
+          return [x, y];
+        });
+      });
+
+    grid.selectAll(".y")
+      .data(yStepsBig)
+      .enter().append("path")
+      .attr("class", "y")
+      .datum(function (y) {
+        return xStepsSmall.map(function (x) {
+          return [x, y];
+        });
+      });
+
+    const path = grid.selectAll("path")
+      // @ts-ignore
+      .attr("d", line<any>());
+  }
+
+  hideGrid() {
+    const grid = select(".grid");
+    grid.remove();
+  }
+
 
   async printNodeDataToConsole() {
     if (!this.graph) {
@@ -185,5 +247,9 @@ export class NgxGraphOrgTreeComponent implements OnInit {
       target: source
     };
     this.formEdge.setValue(formCopy);
+  }
+
+  hideControls() {
+    this.isHidden = !this.isHidden;
   }
 }
