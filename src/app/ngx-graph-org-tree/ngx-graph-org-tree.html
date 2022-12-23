@@ -64,7 +64,7 @@
           </mat-select>
         </mat-form-field>
 
-        <button mat-button color="accent" (click)="swapSourceTarget()"><-></button>
+        <button mat-button color="accent" (click)="swapDirections()"><-></button>
 
         <mat-form-field appearance="fill">
           <mat-select formControlName="end">
@@ -85,7 +85,7 @@
     xmlns:svg="http://www.w3.org/2000/svg"
     #graph
     [showMiniMap]="true"
-    [draggingEnabled]="false"
+    [draggingEnabled]="true"
     [enableZoom]="true"
     [center$]="center$"
     [zoomToFit$]="zoomToFit$"

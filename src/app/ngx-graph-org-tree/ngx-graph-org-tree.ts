@@ -109,10 +109,6 @@ export class NgxGraphOrgTreeComponent implements OnInit, AfterViewInit {
           return [x, y];
         });
       });
-
-    const path = grid.selectAll("path")
-      // @ts-ignore
-      .attr("d", line<any>());
   }
 
   hideGrid() {
@@ -243,6 +239,17 @@ export class NgxGraphOrgTreeComponent implements OnInit, AfterViewInit {
       ...this.formEdge.getRawValue(),
       source: target,
       target: source
+    };
+    this.formEdge.setValue(formCopy);
+  }
+
+  swapDirections() {
+    let start = this.formEdge.get('start')?.value;
+    let end = this.formEdge.get('end')?.value;
+    let formCopy = {
+      ...this.formEdge.getRawValue(),
+      start: end,
+      end: start
     };
     this.formEdge.setValue(formCopy);
   }
