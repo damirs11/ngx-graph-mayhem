@@ -6,7 +6,6 @@ import {data, EdgeData} from "./data";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {select} from "d3-selection";
 import {range} from "d3-array";
-import {line} from "d3-shape";
 import {CustomLayout} from "./custom-layout";
 
 @Component({

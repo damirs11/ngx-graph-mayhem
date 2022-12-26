@@ -1,15 +1,14 @@
-import {Component, OnInit, Output, ViewChild} from '@angular/core';
-import {GraphComponent} from "../lib/graph/graph.component";
-import {Edge, Node} from "../lib/models";
-import {CustomLayout} from "../ngx-graph-org-tree/custom-layout";
-import {FormBuilder} from "@angular/forms";
-import {data} from "../ngx-graph-org-tree/data";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {GraphComponent} from "./lib/graph/graph.component";
+import {Edge, Node} from "./lib/models";
 import {Subject} from "rxjs";
+import {CustomLayout} from "./custom-layout";
+import {data} from "./data";
 
 @Component({
-  selector: 'app-wags-flow-graph',
+  selector: 'prg-wags-flow-graph',
   templateUrl: './wags-flow-graph.component.html',
-  styleUrls: ['./wags-flow-graph.component.scss']
+  styleUrls: ['./wags-flow-graph.component.scss'],
 })
 export class WagsFlowGraphComponent implements OnInit {
   @ViewChild('graph') graph!: GraphComponent;
