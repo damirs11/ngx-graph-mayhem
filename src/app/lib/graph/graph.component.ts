@@ -487,7 +487,7 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
 
       oldLink!.oldLine = oldLink!.line;
 
-      const points = edgeLabel.points;
+      const points = edgeLabel?.points ?? [{x: 0, y: 0}];
       const line = this.generateLine(points);
 
       const newLink = Object.assign({}, oldLink);
@@ -496,10 +496,10 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
 
       this.updateMidpointOnEdge(newLink, points);
 
-      const textPos = points[Math.floor(points.length / 2)];
-      if (textPos) {
-        newLink.textTransform = `translate(${textPos.x || 0},${textPos.y || 0})`;
-      }
+    const textPos = points[Math.floor(points.length / 2)];
+    if (textPos) {
+      newLink.textTransform = `translate(${textPos.x || 0},${textPos.y || 0})`;
+    }
 
       newLink.textAngle = 0;
       if (!newLink.oldLine) {
@@ -756,7 +756,7 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
       .x(d => d.x)
       .y(d => d.y)
       .curve(this.curve);
-    return lineFunction(points);
+    return lineFunction(points ?? [{x: 0, y: 0}]);
   }
 
   /**
