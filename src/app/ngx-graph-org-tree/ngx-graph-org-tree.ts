@@ -2,11 +2,11 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Edge, Node} from "../lib/models";
 import {GraphComponent} from "../lib/graph/graph.component";
 import {Subject} from "rxjs";
-import {data, EdgeData} from "./data";
+import {data, EdgeData} from "../data";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {select} from "d3-selection";
 import {range} from "d3-array";
-import {CustomLayout} from "./custom-layout";
+import {CustomLayout} from "../custom-layout";
 
 @Component({
   selector: 'ngx-graph-org-tree',
@@ -27,6 +27,7 @@ export class NgxGraphOrgTreeComponent implements OnInit, AfterViewInit {
   center$: Subject<boolean> = new Subject();
   zoomToFit$: Subject<boolean> = new Subject();
   update$: Subject<boolean> = new Subject();
+  panToNode$: Subject<any> = new Subject();
 
 
   constructor(private fb: FormBuilder) {
@@ -56,11 +57,9 @@ export class NgxGraphOrgTreeComponent implements OnInit, AfterViewInit {
       end: [""]
     });
 
-
   }
 
   ngAfterViewInit() {
-    this.showGrid();
   }
 
   settings = {

@@ -1,20 +1,19 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {GraphComponent} from "./lib/graph/graph.component";
-import {Edge, Node} from "./lib/models";
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {GraphComponent} from "../lib/graph/graph.component";
+import {Edge, Node} from "../lib/models";
 import {Subject} from "rxjs";
-import {CustomLayout} from "./custom-layout";
-import {data} from "./data";
+import {CustomLayout} from "../custom-layout";
+import {data} from "../data";
 
 @Component({
   selector: 'prg-wags-flow-graph',
   templateUrl: './wags-flow-graph.component.html',
   styleUrls: ['./wags-flow-graph.component.scss'],
 })
-export class WagsFlowGraphComponent implements OnInit {
+export class WagsFlowGraphComponent implements AfterViewInit {
   @ViewChild('graph') graph!: GraphComponent;
 
-  center$: Subject<boolean> = new Subject();
-  zoomToFit$: Subject<boolean> = new Subject();
+  panToNode$: Subject<string> = new Subject();
 
   nodes: Node[] = [];
   links: Edge[] = [];
@@ -29,9 +28,8 @@ export class WagsFlowGraphComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.zoomToFit$.next(true);
-    this.center$.next(true);
+  ngAfterViewInit() {
+    this.panToNode$.next("МСК");
   }
 
   formatNodeDataToNode(nodeData: any) {

@@ -1,9 +1,9 @@
 import { Layout } from '../../models/layout.model';
 import { Graph } from '../../models/graph.model';
 import { id } from '../../utils/id';
-import * as dagre from 'dagre';
 import { Edge } from '../../models/edge.model';
 import { DagreSettings, Orientation } from './dagre';
+import * as dagre from 'dagre';
 
 export interface DagreNodesOnlySettings extends DagreSettings {
   curveDistance?: number;

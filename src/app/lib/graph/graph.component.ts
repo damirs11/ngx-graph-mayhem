@@ -1,45 +1,45 @@
 // rename transition due to conflict with d3 transition
-import { animate, style, transition as ngTransition, trigger } from '@angular/animations';
+import {animate, style, transition as ngTransition, trigger} from '@angular/animations';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
   HostListener,
   Input,
+  NgZone,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
+  SimpleChanges,
   TemplateRef,
   ViewChildren,
-  ViewEncapsulation,
-  NgZone,
-  ChangeDetectorRef,
-  OnChanges,
-  SimpleChanges
+  ViewEncapsulation
 } from '@angular/core';
-import { select } from 'd3-selection';
+import {select} from 'd3-selection';
 import * as shape from 'd3-shape';
 import * as ease from 'd3-ease';
 import 'd3-transition';
-import { Observable, Subscription, of, fromEvent as observableFromEvent } from 'rxjs';
-import { first, debounceTime } from 'rxjs/operators';
-import { identity, scale, smoothMatrix, toSVG, transform, translate } from 'transformation-matrix';
-import { Layout } from '../models/layout.model';
-import { LayoutService } from './layouts/layout.service';
-import { Edge } from '../models/edge.model';
-import { Node, ClusterNode } from '../models/node.model';
-import { Graph } from '../models/graph.model';
-import { id } from '../utils/id';
-import { PanningAxis } from '../enums/panning.enum';
-import { MiniMapPosition } from '../enums/mini-map-position.enum';
-import { throttleable } from '../utils/throttle';
-import { ColorHelper } from '../utils/color.helper';
-import { ViewDimensions, calculateViewDimensions } from '../utils/view-dimensions.helper';
-import { VisibilityObserver } from '../utils/visibility-observer';
+import {fromEvent as observableFromEvent, Observable, of, Subscription} from 'rxjs';
+import {debounceTime, first} from 'rxjs/operators';
+import {identity, scale, smoothMatrix, toSVG, transform, translate} from 'transformation-matrix';
+import {Layout} from '../models/layout.model';
+import {LayoutService} from './layouts/layout.service';
+import {Edge} from '../models/edge.model';
+import {ClusterNode, Node} from '../models/node.model';
+import {Graph} from '../models/graph.model';
+import {id} from '../utils/id';
+import {PanningAxis} from '../enums/panning.enum';
+import {MiniMapPosition} from '../enums/mini-map-position.enum';
+import {throttleable} from '../utils/throttle';
+import {ColorHelper} from '../utils/color.helper';
+import {calculateViewDimensions, ViewDimensions} from '../utils/view-dimensions.helper';
+import {VisibilityObserver} from '../utils/visibility-observer';
 
 /**
  * Matrix
@@ -61,7 +61,7 @@ export interface Matrix {
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('animationState', [
-      ngTransition(':enter', [style({ opacity: 0 }), animate('500ms 100ms', style({ opacity: 1 }))])
+      ngTransition(':enter', [style({opacity: 0}), animate('500ms 100ms', style({opacity: 1}))])
     ])
   ]
 })
@@ -134,7 +134,7 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
   draggingNode!: Node;
   initialized = false;
   graph!: Graph;
-  graphDims: any = { width: 0, height: 0 };
+  graphDims: any = {width: 0, height: 0};
   _oldLinks: Edge[] = [];
   oldNodes: Set<string> = new Set();
   oldClusters: Set<string> = new Set();
@@ -157,7 +157,8 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
     public zone: NgZone,
     public cd: ChangeDetectorRef,
     private layoutService: LayoutService
-  ) {}
+  ) {
+  }
 
   @Input()
   groupResultsBy: (node: any) => string = node => node.label;
@@ -251,7 +252,7 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
   ngOnChanges(changes: SimpleChanges): void {
     this.basicUpdate();
 
-    const { layout, layoutSettings, nodes, clusters, links } = changes;
+    const {layout, layoutSettings, nodes, clusters, links} = changes;
     this.setLayout(this.layout);
     if (layoutSettings) {
       this.setLayoutSettings(this.layoutSettings);
@@ -379,11 +380,11 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
       edges:
         this.links.length > 0
           ? [...this.links].map(e => {
-              if (!e.id) {
-                e.id = id();
-              }
-              return e;
-            })
+            if (!e.id) {
+              e.id = id();
+            }
+            return e;
+          })
           : []
     };
 
@@ -948,7 +949,7 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
       return;
     }
     this.activeEntries = [event, ...this.activeEntries];
-    this.activate.emit({ value: event, entries: this.activeEntries });
+    this.activate.emit({value: event, entries: this.activeEntries});
   }
 
   /**
@@ -962,7 +963,7 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
     this.activeEntries.splice(idx, 1);
     this.activeEntries = [...this.activeEntries];
 
-    this.deactivate.emit({ value: event, entries: this.activeEntries });
+    this.deactivate.emit({value: event, entries: this.activeEntries});
   }
 
   /**
@@ -1251,7 +1252,7 @@ export class GraphComponent implements OnInit, OnChanges, OnDestroy, AfterViewIn
     }
 
     if (width && height) {
-      return { width, height };
+      return {width, height};
     }
 
     return null;

@@ -4,8 +4,9 @@
     [draggingEnabled]="false"
     [draggable]="false"
     [enableZoom]="true"
-    [center$]="center$"
-    [zoomToFit$]="zoomToFit$"
+    [autoZoom]="false"
+    [zoomLevel]="0.8"
+    [panToNode$]="panToNode$"
 
     [links]="links"
     [nodes]="nodes"
@@ -49,7 +50,7 @@
           </table>
         </svg:foreignObject>
 
-        <svg:foreignObject [attr.height]="30*2 + node.data.connections.length*22 " width="350" *ngIf="node.data.middleware">
+        <svg:foreignObject [attr.height]="30*2 + node.data.connections.length*22" width="350" *ngIf="node.data.middleware">
           <table style="height: 100%; width: 100%;">
             <tbody>
             <tr>
